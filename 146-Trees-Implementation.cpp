@@ -50,7 +50,7 @@ public:
 
 // <----------------------------- MEMBER METHODS IMPLEMENTATION OF THE TREE CLASS --------------------------------->
 
-// <------------- Create Tree ------------>
+// <--------------------- Create Tree -------------------->
 void Tree::createTree()
 {
   Node *p = NULL, *t = NULL;
@@ -93,7 +93,7 @@ void Tree::createTree()
   }
 }
 
-// <------------- Pre-Order Traversals ------------>
+// <--------------------- Pre-Order Traversals -------------------->
 void Tree::preOrderTraversalR(Node *p)
 {
   if (p)
@@ -126,7 +126,7 @@ void Tree::preOrderTraversalI(Node *p)
   }
 }
 
-// <------------- In-Order Traversals ------------>
+// <--------------------- In-Order Traversals -------------------->
 void Tree::inOrderTraversalR(Node *p)
 {
   if (p)
@@ -160,7 +160,7 @@ void Tree::inOrderTraversalI(Node *p)
   }
 }
 
-// <------------- Post-Order Traversals ------------>
+// <--------------------- Post-Order Traversals -------------------->
 void Tree::postOrderTraversalR(Node *p)
 {
   if (p)
@@ -171,38 +171,35 @@ void Tree::postOrderTraversalR(Node *p)
   }
 }
 
-// void Tree::postOrderTraversalI(Node *t)
-// {
-//   stack<Node *> st;
-//   long int tempAddr;
+void Tree::postOrderTraversalI(Node *t) // Using 2 stacks
+{
+  stack<Node *> st1, st2;
 
-//   while ((!st.empty()) || t != NULL)
-//   {
-//     if (t)
-//     {
-//       st.push(t);
-//       t = t->lchild;
-//     }
-//     else
-//     {
-//       tempAddr = st.top();
-//       st.pop();
+  if (t)
+    st1.push(t);
 
-//       if (tempAddr > 0)
-//       {
-//         st.push(-(Node *)tempAddr);
-//         t = ((Node *)tempAddr)->rchild;
-//       }
-//       else
-//       {
-//         cout << ((Node *)tempAddr)->data << " ";
-//         t = NULL;
-//       }
-//     }
-//   }
-// }
+  Node *temp = NULL;
+  while (!st1.empty())
+  {
+    temp = st1.top();
+    st1.pop();
 
-// <------------- Level-Order Traversals ------------>
+    st2.push(temp);
+
+    if (temp->lchild)
+      st1.push(temp->lchild);
+    if (temp->rchild)
+      st1.push(temp->rchild);
+  }
+
+  while (!st2.empty())
+  {
+    cout << (st2.top())->data << " ";
+    st2.pop();
+  }
+}
+
+// <--------------------- Level-Order Traversals -------------------->
 void Tree::levelOrderTraversal(Node *p)
 {
   queue<Node *> q;
@@ -229,7 +226,7 @@ void Tree::levelOrderTraversal(Node *p)
   }
 }
 
-// <------------- Other Function ------------>
+// <--------------------- Other Functions -------------------->
 int Tree::height(Node *root)
 {
   int x = 0, y = 0;
@@ -318,25 +315,29 @@ main()
   Tree t;
   t.createTree();
 
+  cout << "\n\nPre-Order Traversal: ";
   t.preOrderTraversalI(t.root);
   cout << endl;
   // t.preOrderTraversalR(t.root);
   // cout << endl;
 
+  cout << "In-Order Traversal: ";
   t.inOrderTraversalR(t.root);
   cout << endl;
   // t.inOrderTraversalI(t.root);
   // cout << endl;
 
+  cout << "Post-Order Traversal: ";
   t.postOrderTraversalR(t.root);
   cout << endl;
   // t.postOrderTraversalI(t.root);
   // cout << endl;
 
+  cout << "Level-Order Traversal: ";
   t.levelOrderTraversal(t.root);
   cout << endl;
 
-  cout << "Height of the tree: " << t.height(t.root) << endl;
+  cout << "\nHeight of the tree: " << t.height(t.root) << endl;
   cout << "Total no. Nodes: " << t.countNodes(t.root) << endl;
   cout << "Sum of all the Nodes: " << t.sumOfNodes(t.root) << endl;
   cout << "No. of Non-Leaf Nodes: " << t.countNonLeafNodes(t.root) << endl;
